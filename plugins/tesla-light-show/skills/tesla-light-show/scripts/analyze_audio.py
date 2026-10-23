@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Analyze a .wav file and emit a JSON timeline of musical features
+Analyze a .wav or .mp3 file and emit a JSON timeline of musical features
 aligned to 20 ms frames (50 FPS) for Tesla light-show generation.
 
 The analyzer keeps the stereo field all the way through the FFT
@@ -47,7 +47,7 @@ librosa is importable at runtime it's used automatically; otherwise
 the pure-numpy path runs.
 
 Usage:
-    python3 analyze_audio.py input.wav output.json
+    python3 analyze_audio.py input.wav|input.mp3 output.json
 """
 from __future__ import annotations
 
@@ -108,6 +108,37 @@ def load_wav_stereo(path: Path):
     L = samples[:, 0]
     R = samples[:, 1] if samples.shape[1] > 1 else samples[:, 0]
     return L.copy(), R.copy(), sr
+
+
+def load_audio_stereo(path: Path):
+    """Load .wav directly; decode .mp3 (or other formats) via ffmpeg, else librosa.
+
+    Tesla light shows accept either a .wav or an .mp3 next to the .fseq.
+    """
+    if path.suffix.lower() == ".wav":
+        return load_wav_stereo(path)
+    import shutil, subprocess, tempfile
+    if shutil.which("ffmpeg"):
+        with tempfile.TemporaryDirectory() as td:
+            tmp = Path(td) / "decoded.wav"
+            subprocess.run(
+                ["ffmpeg", "-v", "error", "-y", "-i", str(path),
+                 "-ac", "2", "-acodec", "pcm_s16le", str(tmp)],
+                check=True,
+            )
+            return load_wav_stereo(tmp)
+    try:
+        import librosa  # type: ignore
+        y, sr = librosa.load(str(path), sr=None, mono=False)
+        y = np.atleast_2d(y).astype(np.float32)
+        L = y[0]
+        R = y[1] if y.shape[0] > 1 else y[0]
+        return L.copy(), R.copy(), int(sr)
+    except ImportError:
+        raise SystemExit(
+            f"Cannot decode {path.suffix} without ffmpeg or librosa. "
+            "Install ffmpeg (or `pip3 install librosa`), or convert the song to .wav."
+        )
 
 
 # ---------------------------------------------------------------------------
@@ -1208,11 +1239,11 @@ def detect_drops(rms_norm):
 
 def main():
     if len(sys.argv) != 3:
-        print("usage: analyze_audio.py input.wav output.json", file=sys.stderr)
+        print("usage: analyze_audio.py input.(wav|mp3) output.json", file=sys.stderr)
         sys.exit(2)
     wav = Path(sys.argv[1])
     out = Path(sys.argv[2])
-    L, R, sr = load_wav_stereo(wav)
+    L, R, sr = load_audio_stereo(wav)
     if sr != 44100:
         print(
             f"WARNING: sample rate is {sr} Hz — Tesla requires 44100 Hz. "

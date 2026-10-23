@@ -1,6 +1,6 @@
 # Tesla Light Show for Claude (Model Y Juniper edition)
 
-A Claude plugin that turns a `.wav` song into a Tesla custom light show (`.fseq` + matching `.wav`) for the Toybox Light Show app. Works for Model 3 / 3 Highland, Model S, Model X, Model Y, **Model Y Juniper (2025+)** and Cybertruck.
+A Claude plugin that turns a `.wav` or `.mp3` song into a Tesla custom light show (`.fseq` + matching audio file) for the Toybox Light Show app. Works for Model 3 / 3 Highland, Model S, Model X, Model Y, **Model Y Juniper (2025+)** and Cybertruck.
 
 Based on [zzorp/tesla-lightshow-skill](https://github.com/zzorp/tesla-lightshow-skill) (MIT). This version adds a Model Y Juniper channel map that was tested on a real car.
 
@@ -8,10 +8,10 @@ Based on [zzorp/tesla-lightshow-skill](https://github.com/zzorp/tesla-lightshow-
 
 1. In the Claude desktop app, open **Customize → Plugins**.
 2. Choose **Add marketplace → Add from a repository**.
-3. Enter Nghtmare7509.
+3. Enter `YOUR-GITHUB-USERNAME/tesla-lightshow-juniper`.
 4. Install **tesla-light-show** from the new marketplace.
 
-Then start a chat, attach a 44.1 kHz `.wav`, and ask for a light show for your car model.
+Then start a chat, attach a `.wav` or `.mp3` (44.1 kHz), and ask for a light show for your car model.
 
 ## Model Y Juniper channel map (verified on-car, Oct 2026)
 
@@ -32,8 +32,8 @@ Tips: start shows from the car's touchscreen (not the phone app), keep file name
 
 ## Requirements
 
-Claude with plugins enabled. The scripts need Python 3 with numpy; librosa, madmom and scipy are optional and improve beat and section detection.
+Claude with plugins enabled. The scripts need Python 3 with numpy (and ffmpeg or librosa for .mp3); librosa, madmom and scipy are optional and improve beat and section detection.
 
 ## License
 
-MIT. Original work © 2026 Zoran Pucar; Model Y Juniper changes by Jared Braden.
+MIT. Original work © 2026 Zoran Pucar; Model Y Juniper changes by Nghtmare7509.

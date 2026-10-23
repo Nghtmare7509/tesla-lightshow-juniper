@@ -1,17 +1,17 @@
 ---
 name: tesla-light-show
-description: Analyze a .wav audio file and generate a Tesla custom light show (.fseq) that the Tesla Toybox Light Show app can play. Use this skill when the user wants to turn a song into a Tesla light show, create or design an .fseq for their Tesla, choreograph lights/closures to music, or asks about generating Tesla xLights sequences from music. Supports Model 3 (incl. Highland), Model S, Model X, Model Y (incl. 2025+ Juniper with front and rear light bars), and Cybertruck with model-specific optimization (boolean vs ramping channels, Falcon Doors / Front Doors on Model X, per-LED light bars on Cybertruck, verified Model Y Juniper light-bar channels, 200-channel extended output).
+description: Analyze a .wav or .mp3 audio file and generate a Tesla custom light show (.fseq) that the Tesla Toybox Light Show app can play. Use this skill when the user wants to turn a song into a Tesla light show, create or design an .fseq for their Tesla, choreograph lights/closures to music, or asks about generating Tesla xLights sequences from music. Supports Model 3 (incl. Highland), Model S, Model X, Model Y (incl. 2025+ Juniper with front and rear light bars), and Cybertruck with model-specific optimization (boolean vs ramping channels, Falcon Doors / Front Doors on Model X, per-LED light bars on Cybertruck, verified Model Y Juniper light-bar channels, 200-channel extended output).
 ---
 
 # Tesla Light Show Generator
 
-Turn any `.wav` file into a compelling, model-tailored Tesla custom light show. The output is a validator-clean FSEQ v2.0 uncompressed binary (`.fseq`) paired with the original audio, ready to put in a `LightShow/` folder on a USB drive.
+Turn any `.wav` or `.mp3` file into a compelling, model-tailored Tesla custom light show. The output is a validator-clean FSEQ v2.0 uncompressed binary (`.fseq`) paired with the original audio, ready to put in a `LightShow/` folder on a USB drive.
 
 ## Inputs and model selection
 
 The skill needs two things:
 
-1. **A path to a `.wav` file** (must be 44.1 kHz — warn the user if it is not; output will still be written but may drift on the vehicle).
+1. **A path to a `.wav` or `.mp3` file.** Tesla accepts either format next to the `.fseq`. Audio should be 44.1 kHz — warn the user if it is not; output will still be written but may drift on the vehicle. `.mp3` is decoded with ffmpeg (or librosa if ffmpeg is missing).
 2. **The Tesla model.** If the user didn't state it in the prompt, ask which of these they have — **do not guess**:
    - `Model 3` (pre-2024, no interior accent lights)
    - `Model 3 Highland` (2024+ refresh, has interior accent lights)
@@ -32,7 +32,7 @@ Accept natural variations ("cybertruck", "model s 2022", "3", "Y", "x", "plaid x
 For each song it produces two files in the user's current directory (or an `output/` subdir, ask if unclear):
 
 - `<basename>.fseq` — the binary light-show sequence.
-- `<basename>.wav` — a copy of the audio (Tesla requires a filename-matched audio file to live in the same directory).
+- `<basename>.wav` or `<basename>.mp3` — a copy of the audio in its original format (Tesla requires a filename-matched audio file to live in the same directory).
 
 The `.fseq` has:
 
@@ -51,7 +51,7 @@ Work in the user's chosen output directory. The scripts live in this skill's `sc
 ### Step 1 — analyze the audio
 
 ```bash
-python3 <skill-dir>/scripts/analyze_audio.py <path/to/song.wav> /tmp/<basename>.json
+python3 <skill-dir>/scripts/analyze_audio.py <path/to/song.wav|song.mp3> /tmp/<basename>.json
 ```
 
 This writes a JSON timeline sampled at 20 ms. The analyzer is
@@ -118,12 +118,12 @@ Normalize the model argument to one of: `model_3`, `model_3_highland`, `model_s`
 
 The composer binds audio features to model-appropriate channels (see `references/model_capabilities.md` and `references/channel_map.md`). It respects closure actuation limits and pre-opens liftgates/charge ports in time for dances at drops.
 
-### Step 3 — copy the wav next to the fseq
+### Step 3 — copy the audio next to the fseq
 
-Tesla requires the audio file next to the .fseq with the **same basename**. Either copy, symlink, or tell the user to do so — default: copy.
+Tesla requires the audio file (.wav or .mp3) next to the .fseq with the **same basename**. Keep the original format — don't convert an mp3 to wav for the USB. Either copy, symlink, or tell the user to do so — default: copy.
 
 ```bash
-cp <path/to/song.wav> <basename>.wav
+cp <path/to/song.wav> <basename>.wav    # or: cp <path/to/song.mp3> <basename>.mp3
 ```
 
 ### Step 4 — validate
