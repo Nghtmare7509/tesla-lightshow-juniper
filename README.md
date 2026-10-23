@@ -19,7 +19,7 @@ Tips: Keep file names short and lowercase
 
 I added a CHANNELS.md so you can see what channels do what if someone wants to modify or dig deeper into it. 
 
-I'm also trying to work out how to do custom messages with the Matrix Headlights. One of the older Lightshows from a holiday update used the Matrix Headlights to display TESLA on the wall in front of the car. I always liked that and think it would be pretty cool to be able to Spell out what you want.
+I was also trying to work out how to do custom messages with the Matrix Headlights. One of the older Lightshows from a holiday update used the Matrix Headlights to display TESLA on the wall in front of the car. I always liked that and think it would be pretty cool to be able to Spell out what you want. It turns out they changed the matrix headlights on newer model 3/Y's and that isn't possible anymore. 
 
 ## Requirements
 
