@@ -1,6 +1,6 @@
 # Tesla Light Show for Claude (Model Y Juniper edition)
 
-A Claude plugin that turns a `.wav` or `.mp3` song into a Tesla custom light show (`.fseq` + matching audio file) for the Toybox Light Show app. Works for Model 3 / 3 Highland, Model S, Model X, Model Y, **Model Y Juniper (2025+)** and Cybertruck.
+A Claude plugin that turns a `.wav` or `.mp3` song into a Tesla custom light show (`.fseq` + matching audio file) for the Toybox Light Show app. This should work for other Models but was specifically setup for 2025+ Model Y Juniper with Lightbars.
 
 Based on [zzorp/tesla-lightshow-skill](https://github.com/zzorp/tesla-lightshow-skill) (MIT). This version adds a Model Y Juniper channel map that was tested on a real car.
 
@@ -8,27 +8,18 @@ Based on [zzorp/tesla-lightshow-skill](https://github.com/zzorp/tesla-lightshow-
 
 1. In the Claude desktop app, open **Customize → Plugins**.
 2. Choose **Add marketplace → Add from a repository**.
-3. Enter `YOUR-GITHUB-USERNAME/tesla-lightshow-juniper`.
+3. Enter `Nghtmare7509/tesla-lightshow-juniper`.
 4. Install **tesla-light-show** from the new marketplace.
 
-Then start a chat, attach a `.wav` or `.mp3` (44.1 kHz), and ask for a light show for your car model.
+Then start a chat, attach a `.wav` or `.mp3` (44.1 kHz), and ask for a light show.
 
-## Model Y Juniper channel map (verified on-car, Oct 2026)
+Tips: Keep file names short and lowercase
 
-| Channel | Tesla's label | What it drives on Juniper |
-|---|---|---|
-| 3 / 4 | Inner main beam | Lower white front lamps |
-| 7 / 8 | Channel 4 L/R | Outer sections of the front light bar |
-| 11 / 12 | Channel 6 L/R | Centre front light bar (either one; fades work) |
-| 13 / 14 | Front turn | Amber front lamps |
-| 21 / 22 | Side repeater | Side repeaters |
-| **25** | Brake | **Rear light bar** |
-| 26 / 27 | Tail L/R | Rear brake lamps |
-| 176–193 | Interior RGB | Ambient / dash lights and centre screen |
+## Other Stuff
 
-No visible effect on Juniper: 5, 6, 9, 10, 15–20, 29, and the Cybertruck per-LED bar channels 47–162. The rear touchscreen can't be controlled by a light show.
+I added a Channels.md so you can see what channels do what if someone wants to modify or dig deeper into it. 
 
-Tips: start shows from the car's touchscreen (not the phone app), keep file names short and lowercase, and reboot the screen if a show was interrupted.
+I'm also trying to work out how to do custom messages with the Matrix Headlights. One of the older Lightshows from a holiday update used the Matrix Headlights to display TESLA on the wall in front of the car. I always liked that and think it would be pretty cool to be able to Spell out what you want.
 
 ## Requirements
 
