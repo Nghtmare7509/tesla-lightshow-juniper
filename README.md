@@ -8,7 +8,7 @@ Based on [zzorp/tesla-lightshow-skill](https://github.com/zzorp/tesla-lightshow-
 
 1. In the Claude desktop app, open **Customize → Plugins**.
 2. Choose **Add marketplace → Add from a repository**.
-3. Enter `YOUR-GITHUB-USERNAME/tesla-lightshow-juniper`.
+3. Enter Nghtmare7509.
 4. Install **tesla-light-show** from the new marketplace.
 
 Then start a chat, attach a 44.1 kHz `.wav`, and ask for a light show for your car model.
