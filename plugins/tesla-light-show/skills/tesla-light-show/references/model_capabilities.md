@@ -72,7 +72,9 @@ Tesla's official xLights guide only documents light bars for Cybertruck. The map
 | 21/22 | Side repeater | Side repeaters (on the front fenders) |
 | 25 | Brake | **Rear light bar** |
 | 26/27 | Tail L/R | Rear brake lamps |
-| 176–193 | Interior RGB | Ambient/dash strip + centre display (colours, fades work; appears dim) |
+| 176–178 / 185–187 | Interior RGB | Centre display / dash ambient strip |
+| 182–184 / 188–190 | Interior RGB "Right front" / "Left front" | **Left** front door strip / **Right** front door strip (mirrored vs Tesla names) |
+| 179–181 / 191–193 | Interior RGB "Right rear" / "Left rear" | **Left** rear door strip / **Right** rear door strip (mirrored vs Tesla names) |
 | 5, 6, 9, 10, 15–20, 29 | — | No visible effect |
 | 47–162 | CT light bars | No effect (Juniper bars are not per-LED) |
 
@@ -84,7 +86,7 @@ Composer behaviour for `model_y_juniper`:
 - Climax: front-to-back segment sweep (7/8 → 11/12 → 26/27 → 25), then both bars held lit for ~4.5 s with the centre bar on a 2 s fade-up and the rear bar pulsing on beats.
 - Secondary drops: 1.2 s front-to-back sweep.
 - Dead channels are folded into live ones (signature→11/12, ch5→7/8, fog→3/4, aux park + markers→21/22, rear fog→30) and zeroed.
-- Interior RGB kept at 0.75–1.0 brightness.
+- Interior RGB kept at 0.75–1.0 brightness; per-zone hue offsets are flipped for Juniper so the colour gradient runs left → right.
 
 Recommend **200-channel** output for Model Y Juniper.
 

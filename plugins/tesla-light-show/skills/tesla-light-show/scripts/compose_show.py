@@ -1414,6 +1414,13 @@ class Composer:
             (CH["L_REAR_RGB_R"], -0.08),
             (CH["R_REAR_RGB_R"], 0.08),
         ]
+        if self._is_juniper:
+            # Verified on-car: Juniper's door zones are mirrored vs Tesla's
+            # names (182 = left front, 188 = right front, 179 = left rear,
+            # 191 = right rear). Flip offsets so the gradient still runs
+            # left -> right across the cabin.
+            surfaces = [(ch, -off if ch not in (CH["CENTER_DISPLAY_R"], CH["CENTER_ACCENT_R"]) else off)
+                        for ch, off in surfaces]
         chroma = self.chroma
         tonic = self.key_tonic
         mode = self.key_mode

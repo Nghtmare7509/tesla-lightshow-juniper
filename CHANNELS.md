@@ -61,6 +61,8 @@ The "Tesla label" column is the name Tesla's xLights layout uses. On the Juniper
 
 ## Things that move (channels 35–41 and 46)
 
+> **Turn on Dance Moves first.** Moving parts only move if the car's light show **Dance Moves** option is enabled. With it off, the car ignores every command below and plays only the lights.
+
 These channels send **commands**, not brightness. Use only these four values:
 
 | Value (byte) | xLights % | Command | What happens |
@@ -73,37 +75,38 @@ These channels send **commands**, not brightness. Use only these four values:
 
 | Ch | Name | On Model Y Juniper | Time to move | Max moves per show | Status |
 |----|------|--------------------|--------------|--------------------|--------|
-| 35 | Left Mirror | Folds / unfolds left mirror | ~2 s | 20 | 📘 Tesla docs |
-| 36 | Right Mirror | Folds / unfolds right mirror | ~2 s | 20 | 📘 Tesla docs |
-| 37 | Left Front Window | Lowers / raises window | ~4 s | 6 (all windows) | 📘 Tesla docs |
-| 38 | Left Rear Window | Lowers / raises window | ~4 s | 6 (all windows) | 📘 Tesla docs |
-| 39 | Right Front Window | Lowers / raises window | ~4 s | 6 (all windows) | 📘 Tesla docs |
-| 40 | Right Rear Window | Lowers / raises window | ~4 s | 6 (all windows) | 📘 Tesla docs |
-| 41 | Liftgate | Opens / closes the power rear hatch | ~14 s open, ~4 s close | 6 | 📘 Tesla docs |
-| 46 | Charge Port | Opens / closes the port door. **Dance makes the port LED cycle rainbow colours.** | ~2 s (auto-closes after ~2 min) | 3 | 📘 Tesla docs |
+| 35 | Left Mirror | **Close = fold in, Open = unfold** (normal driving position) | ~2 s | 20 | ✅ Verified |
+| 36 | Right Mirror | **Close = fold in, Open = unfold** (normal driving position) | ~2 s | 20 | ✅ Verified |
+| 37 | Left Front Window | Lowers / raises window (dance works from closed) | ~4 s | 6 per window | ✅ Verified |
+| 38 | Left Rear Window | Lowers / raises window (dance works from closed) | ~4 s | 6 per window | ✅ Verified |
+| 39 | Right Front Window | Lowers / raises window (dance works from closed) | ~4 s | 6 per window | ✅ Verified |
+| 40 | Right Rear Window | Lowers / raises window (dance works from closed) | ~4 s | 6 per window | ✅ Verified |
+| 41 | Liftgate | Opens / closes the power rear hatch; dances once open | ~14 s open, ~4 s close | 6 | ✅ Verified |
+| 46 | Charge Port | Opens / closes the port door. **Dance makes the port LED cycle rainbow colours.** | ~2 s (auto-closes after ~2 min) | 3 | ✅ Verified |
 
 **Rules for moving parts**
 
-- Only Open, Close and Dance count toward the per-show limits.
+- Only Open, Close and Dance count toward the per-show limits. Each mirror and each window has its own count.
 - **Dance needs the part to be open first.** Send Open early enough for it to finish (for example, open the liftgate about 15 s before you want it to dance). Windows are the exception and can dance from closed.
 - Keep total dance time to about **30 s per show** or the car may stop the moves to protect the motors.
-- Leave windows up at the end of the show. With them closed the music sounds muffled outside the car.
+- Music plays only from the cabin speakers, so Tesla suggests leaving windows down during the show. Put them back up before it ends.
 - Make sure there's room around the car before using the liftgate or mirrors.
 
 ## Interior colour lights (channels 176–193, 200-channel files only)
 
 Each zone takes three channels in a row, **Red, Green, Blue** (0 = off, 255 = full). Mix them for any colour.
 
-| Ch (R, G, B) | Tesla zone name | Status |
-|--------------|-----------------|--------|
-| 176, 177, 178 | Centre front display | ✅ Verified |
-| 179, 180, 181 | Right rear | ✅ Verified |
-| 182, 183, 184 | Right front | ✅ Verified |
-| 185, 186, 187 | Centre front accent (dash strip) | ✅ Verified |
-| 188, 189, 190 | Left front | ✅ Verified |
-| 191, 192, 193 | Left rear | ✅ Verified |
+| Ch (R, G, B) | Tesla zone name | What it actually lights on Juniper | Status |
+|--------------|-----------------|------------------------------------|--------|
+| 176, 177, 178 | Centre front display | Centre screen colour | ✅ Verified |
+| 185, 186, 187 | Centre front accent | Dash ambient strip | ✅ Verified |
+| 182, 183, 184 | Right front | **Left front** door strip (driver) | ✅ Verified |
+| 188, 189, 190 | Left front | **Right front** door strip (passenger) | ✅ Verified |
+| 179, 180, 181 | Right rear | **Left rear** door strip | ✅ Verified |
+| 191, 192, 193 | Left rear | **Right rear** door strip | ✅ Verified |
 
-- All six zones responded, including single colours and smooth colour fades.
+- **Heads up:** Tesla's left/right names for the four door zones are mirrored on the Juniper. Use the "What it actually lights" column.
+- All six zones respond to single colours, mixed colours and smooth fades.
 - The ambient strips look fairly **dim** even at full value. That's the car's limit, not the file's.
 - The **rear touchscreen can't be controlled**. Nothing in 107–110, 163–174 or 176–200 changed it.
 
@@ -112,7 +115,8 @@ Each zone takes three channels in a row, **Red, Green, Blue** (0 = off, 255 = fu
 Keep these at 0. They don't control anything on the Juniper:
 
 - **31–34 and 42–45**: no matching hardware on Model Y.
-- **47–175 and 194–200**: no effect (tested).
+- **47–174 and 194–200**: no effect. Each one was tested on its own for 4 s, watching the outside and the cabin. None of them light anything, and there's no per-LED control of the light bars or the ambient strips.
+- **175**: not tested (it's the suspension channel on another model); leave it at 0.
 
 ---
 
