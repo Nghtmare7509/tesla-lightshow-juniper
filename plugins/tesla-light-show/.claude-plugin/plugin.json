@@ -1,6 +1,6 @@
 {
   "name": "tesla-light-show",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Turn a .wav or .mp3 song into a Tesla custom light show (.fseq), tuned per model, including front and rear light bars on the 2025+ Model Y Juniper.",
   "author": {
     "name": "Nghtmare7509"
